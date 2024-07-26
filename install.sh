@@ -40,8 +40,10 @@ else
     exit 1
 fi
 
+HEADERS=$([ -z "${GITHUB_ACCESS_TOKEN}" ] && echo -n "-H \"Authorization: token $GITHUB_ACCESS_TOKEN\"" || echo -n "")
+
 # Retrieve the download URL for the desired asset
-DOWNLOAD_URL=$(curl -sSL $RELEASE_URL | grep -o "browser_download_url.*$ASSET_NAME\"" | cut -d ' ' -f 2)
+DOWNLOAD_URL=$(curl $HEADERS -sSL $RELEASE_URL | grep -o "browser_download_url.*$ASSET_NAME\"" | cut -d ' ' -f 2)
 
 ASSET_NAME=$(basename $DOWNLOAD_URL)
 
